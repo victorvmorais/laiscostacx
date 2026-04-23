@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Comunicação Corporativa & CX — Lais Costa</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -115,15 +115,15 @@
   }
 
   h1 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Noto Sans', sans-serif;
     font-size: clamp(42px, 5.5vw, 76px);
-    font-weight: 800;
+    font-weight: 900;
     line-height: 1.05;
     color: var(--white);
   }
 
   h2 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Noto Sans', sans-serif;
     font-size: clamp(30px, 3.8vw, 52px);
     font-weight: 700;
     line-height: 1.1;
@@ -131,7 +131,7 @@
   }
 
   h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Noto Sans', sans-serif;
     font-size: 20px;
     font-weight: 700;
     color: var(--white);
@@ -283,9 +283,7 @@
   }
 
   .word-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 40px;
-    font-weight: 800;
+    font-family: 'Noto Sans', sans-serif;
     color: var(--orange);
     opacity: 0.25;
     line-height: 1;
@@ -295,7 +293,7 @@
   .word-label {
     font-size: 18px;
     font-weight: 700;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Noto Sans', sans-serif;
     color: var(--white);
     margin-bottom: 6px;
   }
@@ -322,9 +320,9 @@
 
   /* --------- BIG QUOTE (slide 10) --------- */
   .big-quote {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Noto Sans', sans-serif;
     font-size: clamp(24px, 3vw, 38px);
-    font-weight: 800;
+    font-weight: 900;
     color: var(--white);
     line-height: 1.2;
     text-align: center;
@@ -341,12 +339,19 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  .slide.active .anim { animation: fadeUp 0.6s ease forwards; }
-  .slide.active .anim:nth-child(1) { animation-delay: 0.15s; opacity: 0; }
-  .slide.active .anim:nth-child(2) { animation-delay: 0.25s; opacity: 0; }
-  .slide.active .anim:nth-child(3) { animation-delay: 0.35s; opacity: 0; }
-  .slide.active .anim:nth-child(4) { animation-delay: 0.45s; opacity: 0; }
-  .slide.active .anim:nth-child(5) { animation-delay: 0.55s; opacity: 0; }
+  .anim {
+    opacity: 0;
+  }
+
+  .slide.active .anim {
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .slide.active .anim:nth-child(1) { animation-delay: 0.12s; }
+  .slide.active .anim:nth-child(2) { animation-delay: 0.22s; }
+  .slide.active .anim:nth-child(3) { animation-delay: 0.32s; }
+  .slide.active .anim:nth-child(4) { animation-delay: 0.42s; }
+  .slide.active .anim:nth-child(5) { animation-delay: 0.52s; }
 
   /* Animated SVG classes */
   .orbit { animation: spinOrbit 14s linear infinite; transform-origin: center; }
@@ -848,6 +853,17 @@
     counter.textContent = (i + 1) + ' / ' + slides.length;
   }
 
+  function resetAnims(slide) {
+    const anims = slide.querySelectorAll('.anim');
+    anims.forEach(el => {
+      el.style.animation = 'none';
+      el.style.opacity = '0';
+      void el.offsetWidth;
+      el.style.animation = '';
+      el.style.opacity = '';
+    });
+  }
+
   function goTo(next) {
     if (next === current || animating) return;
     animating = true;
@@ -858,9 +874,9 @@
     slides[prev].classList.remove('active');
     slides[prev].classList.add('exit-up');
 
-    slides[current].style.transform = 'translateY(100%)';
-    slides[current].style.opacity = '0';
-    slides[current].classList.remove('exit-up');
+    slides[current].classList.remove('exit-up', 'active');
+
+    resetAnims(slides[current]);
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -871,9 +887,8 @@
 
     setTimeout(() => {
       slides[prev].classList.remove('exit-up');
-      slides[prev].style.transform = 'translateY(100%)';
       animating = false;
-    }, 800);
+    }, 850);
   }
 
   function next() { if (current < slides.length - 1) goTo(current + 1); }
